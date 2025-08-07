@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worst Case Scenario</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="worst-case-scenario-instructions" class="worst-case-scenario">
+        <h1>Next Pos Game</h1>
+        <h2>Clue:</h2>
+        <img src="assets/Heritage_1.jpg" style="max-width: 80%;">
+        <p style="font-size: 0.8em;">Note: Semua Pos Game berada di DALAM AREA UNIPLAZA & TENGAH</p>
+        <button id="worst-case-scenario-start">Saya Sudah Sampai</button>
+    </div>
+    <div id="worst-case-scenario-mission" class="worst-case-scenario" style="display: none;">
+        <h1>Worst Case Scenario #jumpaditengah</h1>
+        <p>Temui penjaga pos Worst Case Scenario.</p>
+        <p>Tim anda harus menyelesaikan tantangan yang diberikan dalam batas waktu yang telah ditentukan.</p>
+        <p>Penjaga pos akan memberikan gem dan kunci berisikan clue menuju ke pos selanjutnya bagi kelompok yang berhasil menyelesaikan tantangan.</p>
+        <form id="answerForm-worst-case-scenario-mission">
+            <input type="text" id="answerInput-worst-case-scenario-mission" placeholder="Masukkan kunci anda di sini" required>
+            <br>
+            <button id="submit-key-button" type="submit">Kirim Kunci</button>
+        </form>
+        <div id="worst-case-scenario-mission-correct-answer" style="display: none;">
+            <p>Kunci benar! <br> Anda telah menyelesaikan misi di Pos 1 (RED) - Worst Case Scenario.</p>
+            <p>Penjaga pos akan memberikan gem dan kunci berisikan clue menuju ke pos selanjutnya. Tekan tombol "Next" untuk melihat clue menuju pos selanjutnya.</p>
+            <button id="worst-case-scenario-end" onclick="window.location.href='everything-is-awesome.html'">Next</button>
+        </div>
+        <p id="worst-case-scenario-mission-wrong-answer" style="display: none;">Kunci salah, coba lagi.</p>
+    </div>
+    <script>
+        document.getElementById('worst-case-scenario-start').addEventListener('click', function() {
+            document.getElementById('worst-case-scenario-instructions').style.display = 'none';
+            document.getElementById('worst-case-scenario-mission').style.display = 'flex';
+        });
+
+        document.getElementById('answerForm-worst-case-scenario-mission').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const userAnswer = document.getElementById('answerInput-worst-case-scenario-mission').value.trim().toUpperCase();
+
+            fetch('key/worst-case-scenario-key.txt')
+                .then(response => response.text())
+                .then(data => {
+                    const answers = data.split('\n').map(a => a.trim().toUpperCase());
+                    if (answers.includes(userAnswer)) {
+                        document.getElementById('worst-case-scenario-mission-correct-answer').style.display = 'flex';
+                        document.getElementById('submit-key-button').style.background = 'grey';
+                        document.getElementById('worst-case-scenario-mission-wrong-answer').style.display = 'none';
+                    } else {
+                        document.getElementById('worst-case-scenario-mission-correct-answer').style.display = 'none';
+                        document.getElementById('worst-case-scenario-mission-wrong-answer').style.display = 'flex';
+                    }
+                });
+        });
+    </script>
+</body>
+</html>

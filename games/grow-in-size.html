@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grow In Size</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="grow-in-size-instructions" class="grow-in-size">
+        <h1>Grow In Size</h1>
+        <p>Dulu pernah digunakan untuk menyimpan uang. Saat ini jika terjadi kesepakatan, berpotensi menghasilkan uang. Untuk bisa tiba di tujuan ini, tim anda harus memecahkan anagram berikut.</p>
+        <h2>"AUBRYAAS"</h2>
+        <p>Masukkan jawaban anda dalam kolom berikut:</p>
+        <form id="answerForm-grow-in-size-instructions">
+            <input type="text" id="answerInput-grow-in-size-instructions" placeholder="Masukkan jawaban anda di sini" required>
+            <br>
+            <button id="submit-answer-button" type="submit">Kirim Jawaban</button>
+        </form>
+        <div id="mapContainerGrowInSize" style="display: none;">
+            <p>Jawaban Benar!</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d3982.0206010665183!2d98.68230267423755!3d3.582742750335834!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x303131b5baaaaaab%3A0xc5c0bfd326da3f16!2sBank%20Mandiri%20Medan%20Jalan%20Cirebon%2C%20Jalan%20Cirebon%2C%20Pasar%20Baru%2C%20Medan%20City%2C%20North%20Sumatra!3m2!1d3.5831584!2d98.6843938!4m5!1s0x303131b45786ffff%3A0x61aea59f3f412512!2sJl.%20Surabaya%20No.119%2C%20Ps.%20Baru%2C%20Kec.%20Medan%20Kota%2C%20Kota%20Medan%2C%20Sumatera%20Utara%2020212!3m2!1d3.5829863!2d98.6854917!5e0!3m2!1sen!2sid!4v1754396726047!5m2!1sen!2sid" width="350" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <button id="grow-in-size-start">Saya Sudah Sampai</button>
+        </div>
+        <div id="grow-in-size-wrong-answer" style="display: none;">
+            <p>Jawaban salah, coba lagi.</p>
+        </div>
+    </div>
+    <div id="grow-in-size-mission" class="grow-in-size" style="display: none;">
+        <h1>Selesaikan Misi Anda </h1>
+        <p>Anda sudah sampai di Pos Game <br>Grow In Size.</p>
+        <p>Misi tim anda adalah temui penjaga pos Grow In Size dan selesaikan tantangan yang diberikan.</p>
+        <p>Penjaga pos akan memberikan gem dan sebuah kunci berisikan clue menuju ke pos selanjutnya kepada kelompok yang berhasil menyelesaikan tantangan.</p>
+        <form id="answerForm-grow-in-size-mission">
+            <input type="text" id="answerInput-grow-in-size-mission" placeholder="Masukkan kunci anda di sini" required>
+            <br>
+            <button id="submit-key-button" type="submit">Kirim Kunci</button>
+            <br>
+        </form>
+        <div id="grow-in-size-correct-answer" style="display: none;">
+            <p>Kunci benar! <br> Anda telah menyelesaikan misi di Pos Game Grow In Size.</p>
+            <p>Anda mendapatkan 2 buah gem dan sebuah clue menuju ke pos selanjutnya. Tekan tombol "Next" untuk melihat clue menuju pos selanjutnya.</p>
+            <button id="grow-in-size-end" onclick="window.location.href='harmony-in-diversity.html'">Next</button>
+        </div>
+        <p id="grow-in-size-wrong-answer" style="display: none;">Kunci salah, coba lagi.</p>
+    </div>
+    <script>
+        document.getElementById('answerForm-grow-in-size-instructions').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const userAnswer = document.getElementById('answerInput-grow-in-size-instructions').value.trim().toUpperCase();
+
+            fetch('answer/grow-in-size-answer.txt')
+                .then(response => response.text())
+                .then(data => {
+                    const answers = data.split('\n').map(a => a.trim().toUpperCase());
+                    if (answers.includes(userAnswer)) {
+                        document.getElementById('mapContainerGrowInSize').style.display = 'block';
+                        document.getElementById('submit-answer-button').style.background = 'grey';
+                        document.getElementById('grow-in-size-wrong-answer').style.display = 'none';
+                    } else {
+                        document.getElementById('mapContainerGrowInSize').style.display = 'none';
+                        document.getElementById('grow-in-size-wrong-answer').style.display = 'block';
+                    }
+                })
+                .catch(error => console.error('Error fetching the answer:', error));
+        });
+
+        document.getElementById('grow-in-size-start').addEventListener('click', function() {
+            document.getElementById('grow-in-size-mission').style.display = 'flex';
+            document.getElementById('grow-in-size-instructions').style.display = 'none';
+        });
+
+        document.getElementById('answerForm-grow-in-size-mission').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const userAnswer = document.getElementById('answerInput-grow-in-size-mission').value.trim().toUpperCase();
+
+            fetch('key/grow-in-size-key.txt')
+                .then(response => response.text())
+                .then(data => {
+                    const answers = data.split('\n').map(a => a.trim().toUpperCase());
+                    if (answers.includes(userAnswer)) {
+                        document.getElementById('grow-in-size-correct-answer').style.display = 'flex';
+                        document.getElementById('submit-key-button').style.background = 'grey';
+                        document.getElementById('grow-in-size-wrong-answer').style.display = 'none';
+                    } else {
+                        document.getElementById('grow-in-size-correct-answer').style.display = 'none';
+                        document.getElementById('grow-in-size-wrong-answer').style.display = 'flex';
+                    }
+                })
+                .catch(error => console.error('Error fetching the key:', error));
+        });
+    </script>
+</body>
+</html>

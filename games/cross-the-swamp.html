@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cross The Swamp</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="cross-the-swamp-instructions" class="cross-the-swamp">
+        <h1>Next Pos Game</h1>
+        <h2>Clue: </h2>
+        <img src="assets/Parkiran Samping.jpg" style="max-width: 80%;">
+        <p style="font-size: 0.8em;">Note: Semua Pos Game berada di DALAM AREA UNIPLAZA & TENGAH</p>
+        <button id="cross-the-swamp-start">Saya Sudah Sampai</button>
+    </div>
+    <div id="cross-the-swamp-mission" class="cross-the-swamp" style="display: none;">
+        <h1>Cross The Swamp</h1>
+        <p>Temui penjaga pos Cross The Swamp.</p>
+        <p>Tim anda harus menyelesaikan tantangan yang diberikan dalam batas waktu yang telah ditentukan.</p>
+        <p>Penjaga pos akan memberikan gem dan kunci berisikan clue menuju ke pos selanjutnya bagi kelompok yang berhasil menyelesaikan tantangan.</p>
+        <form id="answerForm-cross-the-swamp-mission">
+            <input type="text" id="answerInput-cross-the-swamp-mission" placeholder="Masukkan kunci anda di sini" required>
+            <br>
+            <button id="submit-key-button" type="submit">Kirim Kunci</button>
+        </form>
+        <div id="cross-the-swamp-mission-correct-answer" style="display: none;">
+            <p>Kunci benar! <br> Anda telah menyelesaikan misi di Pos 2 (GREEN) - Cross The Swamp.</p>
+            <p>Penjaga pos akan memberikan gem dan kunci berisikan clue menuju ke pos selanjutnya.Tekan tombol "Next" untuk melihat clue menuju pos selanjutnya.</p>
+            <button id="cross-the-swamp-end" onclick="window.location.href='worst-case-scenario.html'">Next</button>
+        </div>
+        <p id="cross-the-swamp-mission-wrong-answer" style="display: none;">Kunci salah, coba lagi.</p>
+    </div>
+    <script>
+        document.getElementById('cross-the-swamp-start').addEventListener('click', function() {
+            document.getElementById('cross-the-swamp-instructions').style.display = 'none';
+            document.getElementById('cross-the-swamp-mission').style.display = 'flex';
+        });
+
+        document.getElementById('answerForm-cross-the-swamp-mission').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const userAnswer = document.getElementById('answerInput-cross-the-swamp-mission').value.trim().toUpperCase();
+
+            fetch('key/cross-the-swamp-key.txt')
+                .then(response => response.text())
+                .then(data => {
+                    const answers = data.split('\n').map(a => a.trim().toUpperCase());
+                    if (answers.includes(userAnswer)) {
+                        document.getElementById('cross-the-swamp-mission-correct-answer').style.display = 'flex';
+                        document.getElementById('submit-key-button').style.background = 'grey';
+                        document.getElementById('cross-the-swamp-mission-wrong-answer').style.display = 'none';
+                    } else {
+                        document.getElementById('cross-the-swamp-mission-correct-answer').style.display = 'none';
+                        document.getElementById('cross-the-swamp-mission-wrong-answer').style.display = 'flex';
+                    }
+                });
+        });
+    </script>
+</body>
+</html>

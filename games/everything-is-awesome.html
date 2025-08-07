@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Everything is Awesome (LEGO)</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="everything-is-awesome-instructions" class="everything-is-awesome">
+        <h1>Next Pos Game</h1>
+        <h2>Clue:</h2>
+        <img src="assets/West Tower_Lobby.jpg" style="max-width: 80%;" alt="west_tower_lobby">
+        <img src="assets/Meeting Room.jpg" style="max-width: 80%;" alt="meeting_room">
+        <p>Dua Wilayah Operasional RGE yang paling besar</p>
+        <p style="font-size: 0.8em;">Note: Semua Pos Game berada di DALAM AREA UNIPLAZA & TENGAH</p>
+        <button id="everything-is-awesome-start">Saya Sudah Sampai</button>
+    </div>
+    <div id="everything-is-awesome-mission" class="everything-is-awesome" style="display: none;">
+        <h1>Everything Is Awesome</h1>
+        <p>Tim anda harus menyelesaikan tantangan yang diberikan dalam batas waktu yang telah ditentukan.</p>
+        <p>Penjaga pos akan memberikan gem dan kunci berisikan clue menuju ke pos selanjutnya bagi kelompok yang berhasil menyelesaikan tantangan.</p>
+        <form id="answerForm-everything-is-awesome-mission">
+            <input type="text" id="answerInput-everything-is-awesome-mission" placeholder="Masukkan kunci anda di sini" required>
+            <br>
+            <button type="submit">Kirim Kunci</button>
+        </form>
+        <div id="everything-is-awesome-mission-correct-answer" style="display: none;">
+            <p>Kunci benar! <br> Anda telah menyelesaikan misi di Pos 4 (PURPLE) - Everything Is Awesome.</p>
+            <p>Penjaga pos akan memberikan gem dan kunci berisikan clue menuju ke pos selanjutnya. Tekan tombol "Next" untuk melihat clue menuju pos selanjutnya.</p>
+            <button id="everything-is-awesome-end" onclick="window.location.href='obelix-totem.html'">Next</button>
+        </div>
+        <p id="everything-is-awesome-mission-wrong-answer" style="display: none;">Kunci salah, coba lagi.</p>
+    </div>
+    <script>
+        document.getElementById('everything-is-awesome-start').addEventListener('click', function() {
+            document.getElementById('everything-is-awesome-instructions').style.display = 'none';
+            document.getElementById('everything-is-awesome-mission').style.display = 'flex';
+        });
+
+        document.getElementById('answerForm-everything-is-awesome-mission').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const userKey = document.getElementById('answerInput-everything-is-awesome-mission').value.trim().toUpperCase();
+
+            fetch('key/everything-is-awesome-key.txt')
+                .then(response => response.text())
+                .then(data => {
+                    const answers = data.split('\n').map(a => a.trim().toUpperCase());
+                    if (answers.includes(userKey)) {
+                        document.getElementById('everything-is-awesome-mission-correct-answer').style.display = 'flex';
+                        document.getElementById('everything-is-awesome-mission-wrong-answer').style.display = 'none';
+                    } else {
+                        document.getElementById('everything-is-awesome-mission-correct-answer').style.display = 'none';
+                        document.getElementById('everything-is-awesome-mission-wrong-answer').style.display = 'flex';
+                    }
+                });
+        });
+    </script>
+</body>
+</html>

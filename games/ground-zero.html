@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ground Zero</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="ground-zero-instructions" class="ground-zero">
+        <h1>Ground Zero <br>(Titik Nol)</h1>
+        <p>Ini adalah tempat darimana kita berasal. Dulu semua dilakukan oleh satu orang. Saat ini digunakan untuk menyimpan uang dengan mandiri. Untuk bisa tiba di titik nol ini, tim anda harus memecahkan anagram di bawah ini:</p>
+        <h2>"BORNECI"</h2>
+        <p>Masukkan jawaban anda dalam kolom jawaban berikut:</p>
+        <form id="answerForm-ground-zero-instructions">
+            <input type="text" id="answerInput-ground-zero-instructions" placeholder="Masukkan jawaban anda di sini" required>
+            <br>
+            <button id="submit-answer-button" type="submit">Kirim Jawaban</button>
+            <br>
+        </form>
+        <p id="wrong-answer-ground-zero" style="display: none;">Jawaban salah, coba lagi.</p>
+        <div id="mapContainerGroundZero">
+            <p>Jawaban Benar!</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3982.0188549408936!2d98.68178007432496!3d3.5831439963910197!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x303131b5baaaaaab%3A0xc5c0bfd326da3f16!2sBank%20Mandiri%20Medan%20Jalan%20Cirebon!5e0!3m2!1sen!2sid!4v1753691355674!5m2!1sen!2sid" width="350" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <button id="ground-zero-start" style="display: none;">Saya sudah sampai</button>
+        </div>
+    </div>
+    <div id="ground-zero-mission" class="ground-zero" style="display: none;">
+        <h1>Selesaikan Misi Anda </h1>
+        <p>Anda sudah sampai di Pos Game <br>Ground Zero (Titik Nol).</p>
+        <p>Misi tim anda adalah temui penjaga pos Ground Zero dan selesaikan tantangan yang diberikan.</p>
+        <p>Penjaga pos akan memberikan gem dan sebuah kunci berisikan clue menuju ke pos selanjutnya kepada kelompok yang berhasil menyelesaikan tantangan.</p>
+        <form id="answerForm-ground-zero-mission">
+            <input type="text" id="answerInput-ground-zero-mission" placeholder="Masukkan kunci anda di sini" required>
+            <br>
+            <button id="submit-key-button" type="submit">Kirim Kunci</button>
+            <br>
+        </form>
+        <p id="ground-zero-wrong-answer" style="display: none;">Kunci salah, coba lagi.</p>
+        <div id="ground-zero-correct-answer" style="display: none;">
+            <p>Kunci benar! <br> Anda telah menyelesaikan misi di Pos Game Ground Zero (Titik Nol).</p>
+            <p>Anda mendapatkan 2 buah gem dan sebuah clue menuju ke pos selanjutnya. Tekan tombol "Next" untuk melihat clue menuju pos selanjutnya.</p>
+            <button id="ground-zero-end" onclick="window.location.href='grow-in-size.html'">Next</button>
+        </div>
+    </div>
+<script>
+document.getElementById('answerForm-ground-zero-instructions').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const userAnswer = document.getElementById('answerInput-ground-zero-instructions').value.trim().toUpperCase();
+
+    fetch('answer/ground-zero-answer.txt')
+        .then(response => response.text())
+        .then(data => {
+            const answers = data.split('\n').map(a => a.trim().toUpperCase());
+            if (answers.includes(userAnswer)) {
+                document.getElementById('wrong-answer-ground-zero').style.display = 'none';
+                document.getElementById('mapContainerGroundZero').style.display = 'block';
+                document.getElementById('ground-zero-start').style.display = 'block';
+                document.getElementById('submit-answer-button').style.background = 'grey';
+            } else {
+                document.getElementById('mapContainerGroundZero').style.display = 'none';
+                document.getElementById('wrong-answer-ground-zero').style.display = 'block';
+                document.getElementById('ground-zero-start').style.display = 'none';
+            }
+        })
+        .catch(() => alert('Gagal memuat answer sheet.'));
+});
+
+document.getElementById('ground-zero-start').addEventListener('click', function() {
+    document.getElementById('ground-zero-instructions').style.display = 'none';
+    document.getElementById('ground-zero-mission').style.display = 'flex';
+});
+
+document.getElementById('answerForm-ground-zero-mission').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const userKey = document.getElementById('answerInput-ground-zero-mission').value.trim().toUpperCase();
+
+    fetch('key/ground-zero-key.txt')
+        .then(response => response.text())
+        .then(data => {
+            const keys = data.split('\n').map(k => k.trim().toUpperCase());
+            if (keys.includes(userKey)) {
+                document.getElementById('ground-zero-correct-answer').style.display = 'flex';
+                document.getElementById('submit-key-button').style.background = 'grey';
+                document.getElementById('ground-zero-wrong-answer').style.display = 'none';
+            } else {
+                document.getElementById('ground-zero-correct-answer').style.display = 'none';
+                document.getElementById('ground-zero-wrong-answer').style.display = 'flex';
+            }
+        })
+        .catch(() => alert('Gagal memuat key sheet.'));
+});
+</script>
+</body>
+</html>
